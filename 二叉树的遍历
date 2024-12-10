@@ -1,0 +1,171 @@
+import java.util.Stack;
+
+public class test6 {
+    public static void main(String[] args) {
+        TreeNode head = new TreeNode(1);
+        head.left = new TreeNode(2);
+        head.right = new TreeNode(3);
+        head.left.left = new TreeNode(4);
+        head.left.right = new TreeNode(5);
+        head.right.left = new TreeNode(6);
+        head.right.right = new TreeNode(7);
+        //先序遍历栈实现
+        System.out.println("先序");
+        preOrder(head);
+        preOrder1(head);
+        System.out.println();
+        System.out.println("中序");
+        inOrder(head);
+        inOrder1(head);
+        System.out.println();
+        System.out.println("后序");
+        posOrder(head);
+        System.out.println();
+        twoStackPosOrder(head);
+        System.out.println();
+        oneStackPosOrder(head);
+
+    }
+    //先序
+    public static void preOrder(TreeNode head) {
+        Stack<TreeNode> stack = new Stack<>();
+        if (head != null) {
+            stack.push(head);
+            while (!stack.isEmpty()) {
+                head = stack.pop();
+                System.out.print(head.val + " ");
+                //先压入右节点
+                if (head.right != null) {
+                    stack.push(head.right);
+                }
+                //再压入左节点
+                if(head.left != null) {
+                    stack.push(head.left);
+                }
+            }
+        }
+        System.out.println();
+    }
+    //先序递归实现
+    public static void preOrder1(TreeNode head) {
+        if (head == null) {
+            return;
+        }
+        System.out.print(head.val + " ");
+        preOrder1(head.left);
+        preOrder1(head.right);
+    }
+
+    //中序递归实现
+    public static void inOrder1(TreeNode head) {
+        if (head == null) {
+            return;
+        }
+        inOrder1(head.left);
+        System.out.print(head.val + " ");
+        inOrder1(head.right);
+    }
+    //中序非递归实现
+    public static void inOrder(TreeNode head) {
+        //先处理左树，再弹出自己再处理右树
+        Stack<TreeNode> stack = new Stack<>();
+        while(head != null || !stack.isEmpty()) {
+            if(head != null) {
+                stack.push(head);
+                head = head.left;
+            }
+            else {
+                head = stack.pop();
+                System.out.print(head.val + " ");
+                //来到右树
+                head = head.right;
+            }
+        }
+        System.out.println();
+    }
+    //后序递归实现
+    public static void posOrder(TreeNode head) {
+        if (head == null) {
+            return;
+        }
+        posOrder(head.left);
+        posOrder(head.right);
+        System.out.print(head.val + " ");
+    }
+    //后续遍历两个栈实现
+    public static void twoStackPosOrder(TreeNode head) {
+        //参考先序遍历  ---->  中  左  右
+        //实现 --->  中  右  左
+        //再依次逆序  --->  栈实现
+        Stack<TreeNode> stack = new Stack<>();
+        Stack<TreeNode> collect = new Stack<>();
+        //先压左，再压右
+        if(head != null) {
+            stack.push(head);
+            while(!stack.isEmpty()) {
+                //collect 进栈
+                head = stack.pop();
+                collect.push(head);
+                if (head.left != null) {
+                    stack.push(head.left);
+                }
+                if (head.right != null) {
+                    stack.push(head.right);
+                }
+            }
+            while (!collect.isEmpty()) {
+                head = collect.pop();
+                System.out.print(head.val + " ");
+            }
+        }
+    }
+
+    //后序遍历一个栈实现
+    public static void oneStackPosOrder(TreeNode h) {
+        //需要一个哨兵节点h来记录当前节点是否被处理
+        if (h != null) {
+            Stack<TreeNode> stack = new Stack<>();
+            stack.push(h);
+            //分三种情况
+            while (!stack.isEmpty()) {
+                TreeNode cur = stack.peek();
+                if (cur.left != null && h != cur.left && h != cur.right) {
+                    stack.push(cur.left);
+                }
+                //有右树，右树未处理
+                else if (cur.right != null && h != cur.right) {
+                    stack.push(cur.right);
+                }
+                //左树，右树，有 没有 或已处理
+                else {
+                    System.out.print(cur.val + " ");
+                    h = stack.pop();
+                }
+            }
+        }
+    }
+}
+
+public class TreeNode {
+    //
+    TreeNode left;
+    TreeNode right;
+    int val;
+
+    //空参
+    public TreeNode() {}
+    //定义节点值
+    public TreeNode(int val) {
+        this.val = val;
+    }
+    //全参
+    public TreeNode(int val,TreeNode left,TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+
+
+
