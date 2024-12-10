@@ -34,3 +34,38 @@ public class test3 {
 
     }
 }
+
+
+
+
+//字符串的可操作次数
+import java.util.Scanner;
+
+public class test4 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s1 = sc.next();
+        String s2 = sc.next();
+        boolean flag = check(s1,s2);
+        System.out.println(flag);
+
+    }
+
+    //定义方法旋转字符串
+    public static String roate(String s) {
+        char first = s.charAt(0);
+        String end = s.substring(1);
+        return end + first;
+    }
+
+    public static boolean check(String str1,String str2) {
+        for (int i = 0; i < str1.length(); i++) {
+            str1 = roate(str1);
+            if(str1.equals(str2)) {
+               return true;
+            }
+        }
+        return false;
+    }
+}
+
