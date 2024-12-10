@@ -1,0 +1,36 @@
+}//字符串的可操作次数
+import java.util.Scanner;
+
+public class test3 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s1 = sc.next();
+        String s2 = sc.next();
+        //旋转字符串 ——> 类似冒泡排序
+        boolean flag = check(s1, s2);
+        System.out.println(flag);
+
+    }
+
+    public static boolean check(String str1, String str2) {
+        for (int i = 0; i < str1.length(); i++) {
+            str1 = roate(str1);
+            if (str1.equals(str2)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String roate(String s) {
+        char[] s1 = s.toCharArray();
+        char first = s1[0];
+        for (int i = 1; i < s1.length; i++) {
+            s1[i - 1] = s1[i];
+        }
+        s1[s1.length - 1] = first;
+        String ss = new String(s1);
+        return ss;
+
+    }
+}
