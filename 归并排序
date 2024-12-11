@@ -1,0 +1,83 @@
+import java.util.Random;
+
+public class test7 {
+    public static  int l,r;
+    public static void main(String[] args) {
+        Random random = new Random();
+        //随机数组长度
+        int size = random.nextInt(8) + 1;
+        //定义一个数组
+        int[] arr = new int[size];
+        int p = 0;//索引
+        while (p < size) {
+            arr[p++] = random.nextInt(9);
+        }
+        System.out.println("排序前的数组");
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+        l = 0;
+        r = arr.length - 1;
+        //qsort(arr,l,r);
+        mergeQsort(arr,l,r);
+        System.out.println("排序后的数组");
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+    }
+//递归
+    public static void qsort(int[] arr,int l,int r) {
+        if(l == r) {
+            return;
+        }
+        int mid = (l + r) / 2;
+        qsort(arr, l, mid);
+        qsort(arr,mid + 1,r);
+        merge(arr,l,mid,r);
+    }
+
+    public static void merge(int[] nums,int l,int m,int r) {
+        int a = l;
+        int b = m + 1;
+        int i = l;
+        int[] help = new int[nums.length];
+        while(a <= m && b <= r) {
+            help[i++] = nums[a] <= nums[b] ? nums[a++] : nums[b++];
+        }
+        while(a <= m) {
+            help[i++] = nums[a++];
+        }
+        while(b <= r) {
+            help[i++] = nums[b++];
+        }
+        for(int j = l;j <= r;j++) {
+            nums[j] = help[j];
+        }
+    }
+
+
+
+    //非递归实现
+    //核心逻辑
+    public static void mergeQsort(int[] arr,int l,int r) {
+        int n = arr.length;
+        for(int m,step = 1;step < n;step <<= 1) {
+            //goal:求左边界，右边界，m
+            //定义step步长
+            l = 0;//左边界
+            while(l < n) {
+                m = l + step - 1;
+
+                if(m + 1 >= n) {
+                    //已进没有右侧了
+                    break;
+                }
+                //有右侧,求右边界
+                r = Math.min(l + (step << 1) - 1,n - 1);
+                merge(arr,l,m,r);
+                l = r + 1;
+            }
+        }
+    }
+}
