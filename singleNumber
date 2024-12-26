@@ -1,0 +1,21 @@
+package scr;
+public class Vedio_031_DoubleNumber {
+    
+
+
+    public int[] singleNumber(int[] nums) {
+        int eor1 = 0;
+        for(int i = 0;i < nums.length;i++) {
+            eor1 ^= nums[i];
+        }
+        //提取出最右侧的1
+        int rightone = eor1 & (- eor1);
+        int eor2 = 0;
+        for(int i = 0;i < nums.length;i++) {
+            if((nums[i] & rightone) == 0) {
+                eor2 ^= nums[i];
+            }
+        }
+        return new int[]{eor1 ^ eor2, eor2}; 
+    }
+}
