@@ -1,0 +1,24 @@
+package scr;
+public class Vedio_031_OneKindNumberLessTime {
+    
+
+
+    public static int find (int[] arr,int m) {
+        int[] cnts = new int[32];
+        //统计每一位上1的个数
+        for(int num: arr) {
+            for(int i = 0; i < arr.length; i++) {
+                cnts[i] += (num >> i) & 1;
+            }
+        }
+
+        int ans = 0;
+        //如果某一位上1的个数不能被m整除，那么这个数的这一位上一定是1
+        for(int i = 0;i < cnts.length;i++) {
+            if(cnts[i] % m != 0) {
+                ans |= (1 << i);
+            }
+        }
+        return ans;
+    }
+}
